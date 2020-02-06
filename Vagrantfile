@@ -36,7 +36,7 @@ MACHINES = {
 Vagrant.configure("2") do |config|
 
   MACHINES.each do |boxname, boxconfig|
-
+      config.vm.synced_folder "/root/otus-linux", "/vagrant", sshfs_opts_append: "-o nonempty", type: "sshfs"
       config.vm.define boxname do |box|
 
           box.vm.box = boxconfig[:box_name]
@@ -66,7 +66,7 @@ Vagrant.configure("2") do |config|
  	  box.vm.provision "shell", inline: <<-SHELL
 	      mkdir -p ~root/.ssh
               cp ~vagrant/.ssh/auth* ~root/.ssh
-	      yum install -y mdadm smartmontools hdparm gdisk
+	      yum install -y mdadm smartmontools hdparm gdisk rsync
   	  SHELL
 
       end
